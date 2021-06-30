@@ -1,14 +1,20 @@
 /**
- * @author hyx
- * @date 2021-06-28 12:12
+ * @module      12
+ * @author      nayoayo
+ * @date        2021/6/30 8:00 上午
+ * @version     1.0
  */
 const path = require('path');
 const fs = require('fs');
 
-function Index(config) {
-	this.entry = config.entry;
-	this.output = config.output;
-	this.callback = config.callback;
+/**
+ * @param options {{entry: string, output: string, callback: function }}
+ * @constructor
+ */
+function Index(options) {
+	this.entry = options.entry;
+	this.output = options.output;
+	this.callback = options.callback;
 }
 
 Index.prototype.apply = function (compiler) {
@@ -18,8 +24,6 @@ Index.prototype.apply = function (compiler) {
 	let output = path.join(folder, self.output);
 
 	fs.readFile(entry, 'utf8', function (err, data) {
-
-
 		compiler.plugin('done', function () {
 			if (self.callback) {
 				data = self.callback(data);
