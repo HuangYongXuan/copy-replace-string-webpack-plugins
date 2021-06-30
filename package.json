@@ -1,0 +1,10 @@
+{
+  "name": "copy-modify-webpack-plugin",
+  "version": "1.0.0",
+  "description": "Plug-in to copy and modify file content",
+  "main": "index.js",
+  "repository": "https://github.com/HuangYongXuan/copy-replace-string-webpack-plugins.git",
+  "author": "hyx <huangyx@singcheer.com>",
+  "license": "MIT",
+  "private": false
+}
