@@ -8,29 +8,30 @@ const path = require('path');
 const fs = require('fs');
 
 /**
- * @param options {{entry: string, output: string, callback: function }}
+ * @param options {[{entry: string, output: string, callback: function }]}
  * @constructor
  */
 function Index(options) {
-	this.entry = options.entry;
-	this.output = options.output;
-	this.callback = options.callback;
+	this.options = options
 }
 
 Index.prototype.apply = function (compiler) {
 	let self = this;
 	let folder = compiler.options.context;
-	let entry = path.join(folder, self.entry);
-	let output = path.join(folder, self.output);
+	compiler.plugin('done', function () {
+		self.options.forEach((option,index) => {
+			let entry = path.join(folder, option.entry);
+			let output = path.join(folder, option.output);
 
-	fs.readFile(entry, 'utf8', function (err, data) {
-		compiler.plugin('done', function () {
-			if (self.callback) {
-				data = self.callback(data);
-			}
-			fs.writeFileSync(output, data);
-		});
+			fs.readFile(entry, 'utf8', function (err, data) {
+				if (option.callback) {
+					data = option.callback(data);
+				}
+				fs.writeFileSync(output, data);
+			});
+		})
 	});
+
 }
 
 module.exports = Index;
